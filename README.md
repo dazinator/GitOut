@@ -88,7 +88,7 @@ Last thing to mention is that these plugins all reference GitOut.Core which can 
 # Running the solution
 1. Just start it in visual studio, in Debug mode.
     1. Post-build events on the 2 plugin projects, will copy the plugin assemblies to the GitOut.exe directory (hopefully you have xcopy available on your dev environment :))
-    2. Start up arguments have been specified in under the project page, so that by default, running the solution will execute GitOut.exe with necessary arguments to execute the releasenotes plugin.
+    2. Start up arguments have been specified under the project page for GitOut.exe, so that by default, running the solution will execute GitOut.exe with arguments necessary to execute the releasenotes plugin. This should allow you to step through withotu any hassle just to get an idea.
 
 
 
