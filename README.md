@@ -98,7 +98,7 @@ For example:
 
 1. GitVersion Plugin (Calculates SemVer version numbers, and exposes them to CI build systems via stdout)
 2. GitReleaseNotes Plugin (Creates Release Notes based on Issue Tracker of choice (it wants the version number)
-3. GithubReleaseManager Plugin (Allows releases to be created and modified, and issues to be closed / milestones completed on platforms such as GitHub, BitBucket etc - it wants the releasenotes text) 
+3. GithubReleaseManager Plugin (Allows releases to be created and modified, and issues to be closed / milestones completed on GitHub - it wants the releasenotes text) 
 
 In the above workflow, you'd invoke `GitOut.exe --yamlworkflow yamlworkflowname` once to run the workflow, which would be defined in a corresponding `yaml` file named `yamlworkflowname.yaml`:
 
