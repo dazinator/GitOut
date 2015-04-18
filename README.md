@@ -82,7 +82,7 @@ public class SemanticVersionPlugin : CommandLinePlugin
 
 The plugin, when executed, is entirely at liberty to parse the arguments it has been passed, how it sees fit. (although it would be easiest to use the same parser that GitOut uses, as the library is allread present etc)
 
-Last thing to mention is that these plugins all reference GitOut.Core which can have common classes / issue trackers / shared services / logging etc. 
+Last thing to mention is that these plugins all reference GitOut.Core which can have common classes / issue trackers / shared services / logging etc - but the way those services would be exposed to the plugin in question, would be via IPluginExecutionContext)
 
 
 
