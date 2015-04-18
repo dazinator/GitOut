@@ -115,10 +115,12 @@ GitOut.exe would run this workflow by locating the YAML file, and reading parsin
 
 In the example yaml workflow file, notice the line for `GitReleaseNotes` specifies an input argument that refers to an output from a previous step: `%GitVersion.SemVer%`
 
-The way this could work, is that when Plugins execute, such as the `GitVersion` plugin, it can add to the `OutputParameters` of it's `IPluginExecutionContext` - which would be a simple dictionary. In this case it would add to the dictionary, entries for all of those lovely version numbers it calculated, such as `SemVer`, using the format: `pluginname.paramname` for the key, and obviously the property value for the value.
+One way (there may be better ways) I see this could work, is that when Plugins execute, such as the `GitVersion` plugin, they add to an `OutputParameters` dictionary, which would be a property of the `IPluginExecutionContext`.
 
-When GitOut.exe executes executes a workflow, and executes each step / plugin, it can do a quick check in the yaml for arguments that match the parameter syntax i.e `%pluginname.propertyname%`. If it finds a token like this, then it can grab the relevent output parameter from the `IPluginExecutionContext` and pass the value in as that argument to the plugin's execute method instead... OR..
+Because `IPluginExecutionContext` is then passed to subsequent plugins executed during the workflow, it means that all subsequent plugins would have access to those `OutputParameters`.
 
-The plugins themselves can make this check by checking the IPluginExecutionContext.OutputParameters dictionary to see if values have allready been placed there.. You get the idea.. hopefully.
+Propose that plugins expose OutputParameters by adding those values to the dictionary, using the format: `pluginname.paramname` as the key for the value, as that matches the yaml syntax to refer to that param. 
 
-This means, outputs from previous plugins executing within a workflow, can be accessed by subsequent plugins, which may be handy for things like the `ReleaseNotes` text, and current `semantic version`information. 
+When GitOut.exe executes each step / plugin in the workflow, it could substitue arguments that match the syntax `%pluginname.propertyname%` with the actual value from the `IPluginExecutionContext`'s `OutputParameters` OR.. the plugins themselves can check for output parameters in this dictionary, when parsing the arguments... You get the idea.. hopefully.
+
+This means, outputs from previous plugins executing within a workflow, can be accessed by subsequent plugins, which may be handy for things like the `ReleaseNotes` text, and current `semantic version`information amongst other things. 
