@@ -90,5 +90,35 @@ Last thing to mention is that these plugins all reference GitOut.Core (as that's
     1. Post-build events on the 2 plugin projects, will copy the plugin assemblies to the GitOut.exe directory (hopefully you have xcopy available on your dev environment :))
     2. Start up arguments have been specified under the project page for GitOut.exe, so that by default, running the solution will execute GitOut.exe with arguments necessary to execute the releasenotes plugin. This should allow you to step through withotu any hassle just to get an idea.
 
+##Workflow idea
 
+A workflow could be defined as the orchestration of multiple plugins being executed in some sort of sequence.
 
+For example:
+
+1. GitVersion Plugin (Calculates SemVer version numbers, and exposes them to CI build systems via stdout)
+2. GitReleaseNotes Plugin (Creates Release Notes based on Issue Tracker of choice)
+3. GithubReleaseManager Plugin (Allows releases to be created and modified, and issues to be closed / milestones completed on platforms such as GitHub, BitBucket etc) 
+
+In the above workflow, you'd invoke `GitOut.exe --yamlworkflow yamlworkflowname` once to run the workflow, which would be defined in a corresponding `yaml` file named `yamlworkflowname.yaml`:
+
+```
+# Workflow steps
+"GitVersion": { url, "https://somerepourl.git", branch: "master" } # This line specifies plugin name to execute, and args.
+"GitReleaseNotes:": { version: %GitVersion.SemVer%, issuetracker: jira, projectid, 123, username: user1, password: password1, verbose: true }
+"GitReleaseManager:": { version: %GitVersion.SemVer%, releasenotes: %GitReleaseNotes.ReleaseNotesJson%, username: user1, password: password1, verbose: true }
+```
+
+GitOut.exe would run this workflow by locating the YAML file, and reading parsing each line which corresponds to a Plugin to be executed. It would load the corresponding plugin, and call its execute method similar to what it allready does.
+
+### Input / Output params
+
+In the example yaml workflow file, notice the line for `GitReleaseNotes` specifies an input argument that refers to an output from a previous step: `%GitVersion.SemVer%`
+
+The way this could work, is that when when Plugins execute, such as the `GitVersion` plugin, it can add `OutputParameters` to the `IPluginExecutionContext` - in a simple dictionary. In this case it would store the generated semantic version numbers such as `SemVer` in this dictionary using the format: `pluginname.paramname` for the key.
+
+When GitOut.exe executes executes the workflow, and executes each plugin, it can do a quick check in the yaml for input arguments that match this syntax. If one is found it can grab the value from `OutputParameters` on `IPluginExecutionContext` and pass that in as the argument to the plugin execute method instead.  
+
+You get the idea.. hopefully.
+
+This means, things like the `ReleaseNotes` text, and current `semantic version` numbers can be shared between workflow steps as long as the yaml definition takes advantage of output paramaters from previous steps.
