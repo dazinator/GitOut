@@ -109,7 +109,7 @@ In the above workflow, you'd invoke `GitOut.exe --yamlworkflow yamlworkflowname`
 "GitReleaseManager:": { version: %GitVersion.SemVer%, releasenotes: %GitReleaseNotes.ReleaseNotesJson%, username: user1, password: password1, verbose: true }
 ```
 
-GitOut.exe would run this workflow by locating the YAML file, and reading parsing each line which corresponds to a Plugin to be executed. It would load the corresponding plugin, and call its execute method similar to what it allready does.
+GitOut.exe would run this workflow by locating the YAML file, and reading parsing each line which corresponds to a Plugin to be executed. It would load the corresponding plugin, and call its execute method (passingin the args) similar to what it allready does.
 
 ### Input / Output params
 
