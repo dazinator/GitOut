@@ -85,7 +85,10 @@ The plugin, when executed, is entirely at liberty to parse the arguments it has 
 Last thing to mention is that these plugins all reference GitOut.Core which can have common classes / issue trackers / shared services / logging etc - but the way those services would be exposed to the plugin in question, would be via IPluginExecutionContext)
 
 
-
+# Running the solution
+1. Just start it in visual studio, in Debug mode.
+    1. Post-build events on the 2 plugin projects, will copy the plugin assemblies to the GitOut.exe directory 
+    2. Start up arguments have been specified in under the project page, so that by default, running the solution will execute GitOut.exe with necessary arguments to execute the releasenotes plugin.
 
 
 
