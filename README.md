@@ -80,7 +80,9 @@ public class SemanticVersionPlugin : CommandLinePlugin
 
 ```
 
-Last thing to mention is that these plugins all reference GitOut.Core which can have common classes / issue trackers / shared services / logging etc.
+The plugin, when executed, is entirely at liberty to parse the arguments it has been passed, how it sees fit.
+
+Last thing to mention is that these plugins all reference GitOut.Core which can have common classes / issue trackers / shared services / logging etc. 
 
 
 
