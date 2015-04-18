@@ -92,7 +92,7 @@ Last thing to mention is that these plugins all reference GitOut.Core (as that's
 
 ##Workflow idea
 
-A workflow could be defined as the orchestration of multiple plugins being executed in some sort of sequence.
+A workflow could be defined as the orchestration of multiple plugins being executed in some sort of sequence, with potentially state passing between them.
 
 For example:
 
