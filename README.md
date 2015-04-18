@@ -115,10 +115,10 @@ GitOut.exe would run this workflow by locating the YAML file, and reading parsin
 
 In the example yaml workflow file, notice the line for `GitReleaseNotes` specifies an input argument that refers to an output from a previous step: `%GitVersion.SemVer%`
 
-The way this could work, is that when when Plugins execute, such as the `GitVersion` plugin, it can add `OutputParameters` to the `IPluginExecutionContext` - in a simple dictionary. In this case it would store the generated semantic version numbers such as `SemVer` in this dictionary using the format: `pluginname.paramname` for the key.
+The way this could work, is that when Plugins execute, such as the `GitVersion` plugin, it can add to the `OutputParameters` of it's `IPluginExecutionContext` - which would be a simple dictionary. In this case it would add to the dictionary, entries for all of those lovely version numbers it calculated, such as `SemVer`, using the format: `pluginname.paramname` for the key, and obviously the property value for the value.
 
-When GitOut.exe executes executes the workflow, and executes each plugin, it can do a quick check in the yaml for input arguments that match this syntax. If one is found it can grab the value from `OutputParameters` on `IPluginExecutionContext` and pass that in as the argument to the plugin execute method instead.  
+When GitOut.exe executes executes a workflow, and executes each step / plugin, it can do a quick check in the yaml for arguments that match the parameter syntax i.e `%pluginname.propertyname%`. If it finds a token like this, then it can grab the relevent output parameter from the `IPluginExecutionContext` and pass the value in as that argument to the plugin's execute method instead... OR..
 
-You get the idea.. hopefully.
+The plugins themselves can make this check by checking the IPluginExecutionContext.OutputParameters dictionary to see if values have allready been placed there.. You get the idea.. hopefully.
 
-This means, things like the `ReleaseNotes` text, and current `semantic version` numbers can be shared between workflow steps as long as the yaml definition takes advantage of output paramaters from previous steps.
+This means, outputs from previous plugins executing within a workflow, can be accessed by subsequent plugins, which may be handy for things like the `ReleaseNotes` text, and current `semantic version`information. 
